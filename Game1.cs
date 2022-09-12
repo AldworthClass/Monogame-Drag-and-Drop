@@ -28,6 +28,7 @@ namespace Monogame_Drag_and_Drop
         {
             // TODO: Add your initialization logic here
             asteroidRect = new Rectangle(10, 10, 50, 50);
+            isDragging = false;
             base.Initialize();
         }
 
@@ -44,7 +45,19 @@ namespace Monogame_Drag_and_Drop
             prevMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
-            if (re)
+            // Check to see if user clicks on target to begin dragging
+            if (currentMouseState.LeftButton == ButtonState.Pressed && asteroidRect.Contains(currentMouseState.Position) && prevMouseState.LeftButton == ButtonState.Released){
+                isDragging = true;
+            }
+            // User releases object
+            else if (isDragging && currentMouseState.LeftButton == ButtonState.Released)
+                isDragging = false;
+            // Asteroid is dragging and needs to follow the mouse         
+            else if (isDragging)
+            {
+                asteroidRect.Offset(currentMouseState.X - prevMouseState.X, currentMouseState.Y - prevMouseState.Y);
+            }
+
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
