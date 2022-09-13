@@ -17,6 +17,13 @@ namespace Monogame_Drag_and_Drop
         Texture2D asteroidTexture;
         Rectangle asteroidRect;
 
+        Texture2D carTexture;
+        Rectangle carRect;
+
+        Texture2D rocketTexture;
+        Rectangle rocketRect;
+
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -29,6 +36,10 @@ namespace Monogame_Drag_and_Drop
             // TODO: Add your initialization logic here
             asteroidRect = new Rectangle(10, 10, 50, 50);
             isDragging = false;
+            
+            carRect = new Rectangle(200, 200, 75, 25);
+            rocketRect = new Rectangle(400, 100, 40, 75);
+
             base.Initialize();
         }
 
@@ -38,6 +49,9 @@ namespace Monogame_Drag_and_Drop
 
             // TODO: use this.Content to load your game content here
             asteroidTexture = Content.Load<Texture2D>("asteroid");
+            carTexture = Content.Load<Texture2D>("fast_car");
+            rocketTexture = Content.Load<Texture2D>("rocket");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -75,6 +89,8 @@ namespace Monogame_Drag_and_Drop
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(asteroidTexture, asteroidRect, Color.White);
+            _spriteBatch.Draw(carTexture, carRect, Color.White);
+            _spriteBatch.Draw(rocketTexture, rocketRect, Color.White);
 
             _spriteBatch.End();
 
