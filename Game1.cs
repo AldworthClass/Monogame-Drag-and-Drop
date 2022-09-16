@@ -59,7 +59,7 @@ namespace Monogame_Drag_and_Drop
 
         }
 
-        // Returns true when a click occurs
+        // Returns true when a left click occurs
         protected bool NewClick()
         {
             return currentMouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released;
