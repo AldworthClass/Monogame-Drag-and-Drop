@@ -12,7 +12,9 @@ namespace Monogame_Drag_and_Drop
         MouseState currentMouseState;
         MouseState prevMouseState;
 
-        bool isDragging;
+        bool isDraggingAsteroid;
+        bool isDraggingCar;
+        bool isDraggingRocket;
 
         Texture2D asteroidTexture;
         Rectangle asteroidRect;
@@ -35,10 +37,13 @@ namespace Monogame_Drag_and_Drop
         {
             // TODO: Add your initialization logic here
             asteroidRect = new Rectangle(10, 10, 50, 50);
-            isDragging = false;
+            isDraggingAsteroid = false;
             
             carRect = new Rectangle(200, 200, 75, 25);
+            isDraggingCar = false;
+
             rocketRect = new Rectangle(400, 100, 40, 75);
+            isDraggingRocket = false;
 
             base.Initialize();
         }
@@ -54,23 +59,53 @@ namespace Monogame_Drag_and_Drop
 
         }
 
+        // Returns true when a click occurs
+        protected bool NewClick()
+        {
+            return currentMouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released;
+        }
         protected override void Update(GameTime gameTime)
         {
             prevMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
+
+            // Asteroid Dragging Code
+            // ++++++++++++++++++++++
             // Check to see if user clicks on target to begin dragging
-            if (currentMouseState.LeftButton == ButtonState.Pressed && asteroidRect.Contains(currentMouseState.Position) && prevMouseState.LeftButton == ButtonState.Released){
-                isDragging = true;
-            }
+            if (NewClick() && asteroidRect.Contains(currentMouseState.Position))
+                isDraggingAsteroid = true;
             // User releases object
-            else if (isDragging && currentMouseState.LeftButton == ButtonState.Released)
-                isDragging = false;
+            else if (isDraggingAsteroid && currentMouseState.LeftButton == ButtonState.Released)
+                isDraggingAsteroid = false;
             // Asteroid is dragging and needs to follow the mouse         
-            else if (isDragging)
-            {
+            else if (isDraggingAsteroid)
                 asteroidRect.Offset(currentMouseState.X - prevMouseState.X, currentMouseState.Y - prevMouseState.Y);
-            }
+
+
+            // Rocket Dragging Code (Vertical)
+            // +++++++++++++++++++++++++++++++++
+            // Check to see if user clicks on target to begin dragging
+            if (NewClick() && rocketRect.Contains(currentMouseState.Position))
+                isDraggingRocket = true;
+            // User releases object
+            else if (isDraggingRocket && currentMouseState.LeftButton == ButtonState.Released)
+                isDraggingRocket = false;
+            // Object is dragging and needs to follow the mouse vertically         
+            else if (isDraggingRocket)
+                rocketRect.Offset(0, currentMouseState.Y - prevMouseState.Y);
+
+            // Car Dragging Code (Horizontal)
+            // +++++++++++++++++++++++++++++++++
+            // Check to see if user clicks on target to begin dragging
+            if (NewClick() && carRect.Contains(currentMouseState.Position))
+                isDraggingCar = true;
+            // User releases object
+            else if (isDraggingCar && currentMouseState.LeftButton == ButtonState.Released)
+                isDraggingCar = false;
+            // Object is dragging and needs to follow the mouse horizontally         
+            else if (isDraggingCar)
+                carRect.Offset(currentMouseState.X - prevMouseState.X, 0);
 
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
