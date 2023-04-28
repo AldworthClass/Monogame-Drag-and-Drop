@@ -107,7 +107,7 @@ namespace Monogame_Drag_and_Drop
             else if (isDraggingCar)
                 carRect.Offset(currentMouseState.X - prevMouseState.X, 0);
 
-                        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
